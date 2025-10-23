@@ -1,17 +1,32 @@
 const db = require('../utils/DB-Connection');
 const postError = require('../utils/centralErrorHandle');
+const Student = require('../models/studentDb');
 
 
-const studentPost = (req,res)=>{
-    const {name,email,age} = req.body
 
-    const insertQuery = 'INSERT INTO Students (name,email,age) VALUES (?,?,?)'
-    db.execute(insertQuery,[name,email,age],(err,result)=>{
-        if(err){
-            return postError(res,err.message,500)
-        }
-        res.status(201).send(result)
-    })
+const studentPost = async (req,res)=>{
+    try {
+        const {name,email,age} = req.body
+        const student = await Student.create({
+            name:name,
+            email:email,
+            age:age
+        })
+        res.status(201).send(student)
+
+    } catch (error) {
+        postError(res,error.message,500)
+    }
+
+
+
+    // const insertQuery = 'INSERT INTO Students (name,email,age) VALUES (?,?,?)'
+    // db.execute(insertQuery,[name,email,age],(err,result)=>{
+    //     if(err){
+    //         return postError(res,err.message,500)
+    //     }
+    //     res.status(201).send(result)
+    // })
 }
 
 const studentGet = (req,res)=>{
@@ -22,18 +37,34 @@ const studentGet = (req,res)=>{
         res.status(200).send(result)
     })
 }
-const studentPut = (req,res)=>{
-    const id = req.params.id;
-    const {name,email,age} = req.body
+const studentPut = async (req,res)=>{
 
-    const updateQuery = 'UPDATE Students SET name = ?, email = ?, age = ? WHERE id = ?';
+    try {
+        const id = req.params.id;
+        const {name,email,age} = req.body
 
-    db.execute(updateQuery,[name,email,age,id],(err,result)=>{
-        if(err){
-            return postError(res,err.message,500);
+        const student = await Student.findByPk(id)
+        if(!student){
+            return postError(res,'Student not found',404)
         }
-        res.status(200).send(result)
-    })
+        student.name = name
+        student.email = email
+        student.age = age
+        await student.save()
+        res.status(200).send(student)
+    } catch (error) {
+        postError(res,error.message,500)
+    }
+    
+
+    // const updateQuery = 'UPDATE Students SET name = ?, email = ?, age = ? WHERE id = ?';
+
+    // db.execute(updateQuery,[name,email,age,id],(err,result)=>{
+    //     if(err){
+    //         return postError(res,err.message,500);
+    //     }
+    //     res.status(200).send(result)
+    // })
 };
 
 const studentGetId = (req,res)=>{
@@ -48,17 +79,33 @@ const studentGetId = (req,res)=>{
     })
 }
 
-const studentDelete = (req,res)=>{
-    const id = req.params.id;
+const studentDelete = async (req,res)=>{
 
-    const deleteQuery = 'DELETE FROM Students WHERE id = ?';
+    try {
+        const id = req.params.id;
 
-    db.execute(deleteQuery,[id],(err,result)=>{
-        if(err){
-            return postError(res,err.message,500);
+        const student = await Student.destroy({
+            where:{
+                id:id
+            }
+        })
+        res.status(200).send(student)
+        if(!student){
+            return postError(res,'Student not found',404)
         }
-        res.status(200).send(result)
-    })
+        
+    } catch (error) {
+        postError(res,error.message,500)
+    }
+
+    // const deleteQuery = 'DELETE FROM Students WHERE id = ?';
+
+    // db.execute(deleteQuery,[id],(err,result)=>{
+    //     if(err){
+    //         return postError(res,err.message,500);
+    //     }
+    //     res.status(200).send(result)
+    // })
 
 }
 

@@ -20,7 +20,7 @@ app.use('/students',studentRoutes)
 // app.use('/Bookings',bookingRoutes)
 // app.use('/Payments',paymentRoutes)
 
-db.sync({force:true}).then(() => {
+db.sync().then(() => {
   console.log('Database synced');
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
