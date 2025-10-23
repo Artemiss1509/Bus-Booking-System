@@ -49,9 +49,20 @@ const userDelete = (req,res)=>{
 
 }
 
+const userGet = (req,res)=>{
+    const users = db.execute('SELECT * FROM Users',(err,result)=>{
+        if(err){
+            return postError(res,err.message,500);
+        }
+        res.status(200).send(result)
+    })
+}
+
+
 
 module.exports = {
     userPost,
     userPut,
-    userDelete
+    userDelete,
+    userGet
 };
