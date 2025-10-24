@@ -1,20 +1,24 @@
 const {Sequelize, DataTypes} = require('sequelize');
 const sequelize = require('../utils/DB-Connection');
 
-const user = sequelize.define('user',{
+const buses = sequelize.define('buses',{
     id:{
         type:DataTypes.INTEGER,
         primaryKey:true,
         autoIncrement:true
     },
-    name:{
-        type:DataTypes.STRING,
+    busNumber:{
+        type:DataTypes.INTEGER,
         allowNull:false
     },
-    email:{
-        type:DataTypes.STRING,
+    totalSeats:{
+        type:DataTypes.INTEGER,
+        allowNull:false
+    },
+    availableSeats:{
+        type:DataTypes.INTEGER,
         allowNull:false
     }
 })
 
-module.exports = user;
+module.exports = buses;

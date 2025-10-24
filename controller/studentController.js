@@ -37,6 +37,8 @@ const studentGet = (req,res)=>{
         res.status(200).send(result)
     })
 }
+
+
 const studentPut = async (req,res)=>{
 
     try {

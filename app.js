@@ -1,12 +1,15 @@
 const express = require('express');
 const db = require('./utils/DB-Connection');
-// const userRoutes = require('./routes/userRoutes');
-// const busRoutes = require('./routes/busesRoutes');
-// const bookingRoutes = require('./routes/bookingsRoutes');
-// const paymentRoutes = require('./routes/paymentsRoutes');
+const userRoutes = require('./routes/userRoutes');
+const busRoutes = require('./routes/busesRoutes');
+const bookingRoutes = require('./routes/bookingsRoutes');
+const paymentRoutes = require('./routes/paymentsRoutes');
 
 const studentRoutes = require('./routes/studentRoutes');
 const studentModel = require('./models/studentDb');
+const busModel = require('./models/busesDb');
+const bookingModel = require('./models/bookingDb');
+const paymentModel = require('./models/paymentDb');
 
 
 
@@ -15,10 +18,10 @@ app.use(express.json());
 
 app.use('/students',studentRoutes)
 
-// app.use('/Users',userRoutes)
-// app.use('/Buses',busRoutes)
-// app.use('/Bookings',bookingRoutes)
-// app.use('/Payments',paymentRoutes)
+app.use('/Users',userRoutes)
+app.use('/Buses',busRoutes)
+app.use('/Bookings',bookingRoutes)
+app.use('/Payments',paymentRoutes)
 
 db.sync().then(() => {
   console.log('Database synced');
