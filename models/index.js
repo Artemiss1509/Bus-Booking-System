@@ -1,26 +1,20 @@
-const Student = require('./studentDb');
-const IdentityCard = require('./identityDb');
-const Department = require('./departmentDb');
-const Courses = require('./coursesDb');
-const studentCourses = require('./studentCoursesDb');
+const User = require('../models/userDb');
+const Bookings = require('../models/bookingDb');
+const Payments = require('../models/paymentDb');
+const Buses = require('../models/busesDb');
 
-//one-to-one
-Student.hasOne(IdentityCard);
-IdentityCard.belongsTo(Student);
 
-//one-to-many
-Department.hasMany(Student);
-Student.belongsTo(Department);
+//one to many
+User.hasMany(Bookings);
+Bookings.belongsTo(User);
 
-//many-to-many
-Courses.belongsToMany(Student,{through:studentCourses});
-Student.belongsToMany(Courses,{through:studentCourses});
-
+//one to many
+Buses.hasMany(Bookings);
+Bookings.belongsTo(Buses);
 
 module.exports = {
-    Student,
-    IdentityCard,
-    Department,
-    Courses,
-    studentCourses
+    User,
+    Bookings,
+    Payments,
+    Buses
 }

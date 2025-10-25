@@ -8,7 +8,7 @@ const buses = sequelize.define('buses',{
         autoIncrement:true
     },
     busNumber:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.STRING,
         allowNull:false
     },
     totalSeats:{

@@ -2,6 +2,8 @@ const db = require('../utils/DB-Connection');
 const postError = require('../utils/centralErrorHandle');
 const Buses = require('../models/busesDb');
 const {Op} = require('sequelize');
+const User = require('../models/userDb');
+const Booking = require('../models/bookingDb');
 
 
 
@@ -46,21 +48,26 @@ const busGet = async (req,res)=>{
     } catch (error) {
         postError(res,error.message,500)
     }
+
+}
+
+const busGet2 = async (req,res)=>{
+    try {
+        const busid = req.params.id;
+        const getQuery = await Booking.findByPk(busid,{include:User})
+        if(!getQuery){
+            return postError(res,'Bus not found',404)
+        }
+        res.status(200).send(getQuery)
+    } catch (error) {
+        postError(res,error.message,500)
+    }
     
-
-    // const getQuery = 'SELECT * FROM Buses WHERE availableSeats >= ?'
-
-    // db.execute(getQuery,[seats],(err,result)=>{
-    //     if(err){
-    //         return postError(res,err.message,500)
-    //     }
-    //     res.status(200).send(result)
-    // })
 }
 
 
 module.exports = {
     busPost,
-    busGet
-
+    busGet,
+    busGet2
 };

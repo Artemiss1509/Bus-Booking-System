@@ -4,5 +4,6 @@ const busController = require('../controller/busController')
 
 routes.post('/',busController.busPost)
 routes.get('/available/:seats',busController.busGet)
+routes.get('/:id/bookings',busController.busGet2)
 
 module.exports = routes;

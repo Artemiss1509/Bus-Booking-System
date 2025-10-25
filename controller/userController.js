@@ -1,6 +1,9 @@
 const db = require('../utils/DB-Connection');
 const postError = require('../utils/centralErrorHandle');
 const user = require('../models/userDb');
+const Buses = require('../models/busesDb');
+const Booking = require('../models/bookingDb');
+const {Op} = require('sequelize');
 
 
 const userPost = async (req,res)=>{
@@ -90,11 +93,27 @@ const userGet = async(req,res)=>{
     
 }
 
+const userGetId = async (req,res)=>{
+    try {
+        const id = req.params.id;
+        const getQuery = await Booking.findByPk(id,{include:Buses})
+        if(!getQuery){
+            return postError(res,'User not found',404)
+        }
+        res.status(200).send(getQuery)
+
+    } catch (error) {
+        postError(res,error.message,500)
+    }
+}
+
 
 
 module.exports = {
     userPost,
     userPut,
     userDelete,
-    userGet
+    userGet,
+    userGetId
+
 };
