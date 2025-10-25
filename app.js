@@ -1,15 +1,13 @@
 const express = require('express');
 const db = require('./utils/DB-Connection');
+
 const userRoutes = require('./routes/userRoutes');
 const busRoutes = require('./routes/busesRoutes');
 const bookingRoutes = require('./routes/bookingsRoutes');
 const paymentRoutes = require('./routes/paymentsRoutes');
-
 const studentRoutes = require('./routes/studentRoutes');
-const studentModel = require('./models/studentDb');
-const busModel = require('./models/busesDb');
-const bookingModel = require('./models/bookingDb');
-const paymentModel = require('./models/paymentDb');
+
+require('./models');
 
 
 
@@ -23,7 +21,7 @@ app.use('/Buses',busRoutes)
 app.use('/Bookings',bookingRoutes)
 app.use('/Payments',paymentRoutes)
 
-db.sync().then(() => {
+db.sync({alter:true}).then(() => {
   console.log('Database synced');
   app.listen(3000, () => {
     console.log('Server is running on port 3000');
@@ -32,8 +30,3 @@ db.sync().then(() => {
   console.error('Error syncing database:', error);
 })
 
-
-
-// app.listen(3000, () => {
-//   console.log('Server is running on port 3000');
-// });

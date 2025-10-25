@@ -1,19 +1,18 @@
 const db = require('../utils/DB-Connection');
 const postError = require('../utils/centralErrorHandle');
 const Student = require('../models/studentDb');
+const IdentityCard = require('../models/identityDb');
 
 
 
 const studentPost = async (req,res)=>{
     try {
-        const {name,email,age} = req.body
-        const student = await Student.create({
-            name:name,
-            email:email,
-            age:age
+        const student = await Student.create(req.body.student)
+        const idCard = await IdentityCard.create({
+            ...req.body.identityCard,
+            StudentId:student.id
         })
-        res.status(201).send(student)
-
+        res.status(201).send(student,idCard)
     } catch (error) {
         postError(res,error.message,500)
     }
