@@ -6,6 +6,8 @@ const busRoutes = require('./routes/busesRoutes');
 const bookingRoutes = require('./routes/bookingsRoutes');
 const paymentRoutes = require('./routes/paymentsRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const courseRoutes = require('./routes/courseRoutes');
+
 
 require('./models');
 
@@ -15,6 +17,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/students',studentRoutes)
+app.use('/courses',courseRoutes)
 
 app.use('/Users',userRoutes)
 app.use('/Buses',busRoutes)
